@@ -1,22 +1,5 @@
 {
-  "VAE": {
-    "z_dim": 2,
-    "encoder": {
-      "conv1": {
-        "filters": 32
-      },
-      "conv2": {
-        "filters": 64
-      }
-    },
-    "decoder": {
-
-    }
-  },
-
-  "trainer": {
-    "epochs": 15,
-    "batch_size": 32,
-    "lr": 0.0001
-  }
+  "epochs": 15,
+  "batch_size": 32,
+  "lr": 0.0001
 }
