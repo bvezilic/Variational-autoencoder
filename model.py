@@ -19,17 +19,17 @@ class Encoder(nn.Module):
 class LatentZ(nn.Module):
     def __init__(self, hidden_size, latent_size):
         super().__init__()
-        self.mean = nn.Linear(hidden_size, latent_size)
+        self.mu = nn.Linear(hidden_size, latent_size)
         self.logvar = nn.Linear(hidden_size, latent_size)
 
     def forward(self, x):
-        mean = self.mean(x)
+        mu = self.mu(x)
         logvar = self.logvar(x)
 
         std = torch.exp(0.5*logvar)
         eps = torch.randn_like(std)
 
-        return std * eps + mean
+        return std * eps + mu, logvar, mu
 
 
 class Decoder(nn.Module):
@@ -58,7 +58,7 @@ class VAE(nn.Module):
 
     def forward(self, x):
         p = self.encoder(x)
-        z = self.latent_z(p)
+        z, logvar, mu = self.latent_z(p)
         q = self.decoder(z)
 
-        return q
+        return q, logvar, mu
