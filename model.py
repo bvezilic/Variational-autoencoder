@@ -10,10 +10,10 @@ class Encoder(nn.Module):
         self.fc2 = nn.Linear(hidden_size, hidden_size)
 
     def forward(self, x):
-        p = F.relu(self.fc1(x))
-        p = F.relu(self.fc2(p))
+        p_x = F.relu(self.fc1(x))
+        p_x = F.relu(self.fc2(p_x))
 
-        return p
+        return p_x
 
 
 class LatentZ(nn.Module):
@@ -22,9 +22,9 @@ class LatentZ(nn.Module):
         self.mu = nn.Linear(hidden_size, latent_size)
         self.logvar = nn.Linear(hidden_size, latent_size)
 
-    def forward(self, x):
-        mu = self.mu(x)
-        logvar = self.logvar(x)
+    def forward(self, p_x):
+        mu = self.mu(p_x)
+        logvar = self.logvar(p_x)
 
         std = torch.exp(0.5*logvar)
         eps = torch.randn_like(std)
@@ -38,11 +38,11 @@ class Decoder(nn.Module):
         self.fc1 = nn.Linear(latent_size, hidden_size)
         self.fc2 = nn.Linear(hidden_size, input_size)
 
-    def forward(self, z):
-        q = F.relu(self.fc1(z))
-        q = F.sigmoid(self.fc2(q))
+    def forward(self, z_x):
+        q_x = F.relu(self.fc1(z_x))
+        q_x = F.sigmoid(self.fc2(q_x))
 
-        return q
+        return q_x
 
 
 class VAE(nn.Module):
@@ -57,8 +57,8 @@ class VAE(nn.Module):
         self.decoder = Decoder(latent_size, hidden_size, input_size)
 
     def forward(self, x):
-        p = self.encoder(x)
-        z, logvar, mu = self.latent_z(p)
-        q = self.decoder(z)
+        p_x = self.encoder(x)
+        z_x, logvar, mu = self.latent_z(p_x)
+        q_x = self.decoder(z_x)
 
-        return q, logvar, mu
+        return q_x, logvar, mu
