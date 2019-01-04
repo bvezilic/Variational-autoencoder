@@ -40,7 +40,7 @@ class Decoder(nn.Module):
 
     def forward(self, z_x):
         q_x = F.relu(self.fc1(z_x))
-        q_x = F.sigmoid(self.fc2(q_x))
+        q_x = torch.sigmoid(self.fc2(q_x))
 
         return q_x
 
@@ -58,7 +58,7 @@ class VAE(nn.Module):
 
     def forward(self, x):
         p_x = self.encoder(x)
-        z_x, logvar, mu = self.latent_z(p_x)
-        q_x = self.decoder(z_x)
+        z, logvar, mu = self.latent_z(p_x)
+        q_z = self.decoder(z)
 
-        return q_x, logvar, mu
+        return q_z, logvar, mu

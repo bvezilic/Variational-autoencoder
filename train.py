@@ -1,6 +1,5 @@
 import json
 
-from tqdm import tqdm
 from torch.optim import Adam
 from torch.utils.data.dataloader import DataLoader
 from torchvision.datasets import MNIST
@@ -25,10 +24,11 @@ class Trainer:
 
         losses = []
         for epoch in range(1, epochs+1):
+            print("-" * 40)
             print("Epoch {}".format(epoch))
 
             running_loss = 0
-            for inputs, _ in tqdm(self.data_loader):
+            for inputs, _ in self.data_loader:
                 self.optimizer.zero_grad()
 
                 x = inputs.view(inputs.shape[0], -1).to(self.device)
@@ -43,7 +43,7 @@ class Trainer:
 
             epoch_loss = running_loss / len(self.data_loader)
             losses.append(epoch_loss)
-            print("Loss: {}\n\n".format(epoch_loss))
+            print("Loss: {:.4f}".format(epoch_loss))
 
         return losses
 
@@ -53,14 +53,14 @@ def train():
     config = json.load(open(args.config, "r"))
 
     # Load data set
-    dataset = MNIST(root="data", transform=ToTensor())
+    dataset = MNIST(root="data", transform=ToTensor(), download=True)
 
     # Create data loader
     data_loader = DataLoader(dataset=dataset, batch_size=config["batch_size"])
 
     # Load from checkpoint if passed
     if args.resume:
-        model, optimizer = load_checkpoint(os.path.join(MODELS_ROOT, config["save_path"]))
+        model, optimizer = load_checkpoint(os.path.join(MODELS_ROOT, args.resume))
     else:
         # Initialize model
         model = VAE(**config["model_params"])

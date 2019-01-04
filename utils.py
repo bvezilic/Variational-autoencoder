@@ -7,7 +7,8 @@ from model import VAE
 
 def save_checkpoint(model, optimizer, path):
     if not os.path.exists(os.path.dirname(path)):
-        os.makedirs(os.path.dirname(path), exist_ok=True)
+        print("Creating directories with path: `{}`".format(path))
+        os.makedirs(os.path.dirname(path))
 
     torch.save({
         "model_state_dict": model.state_dict(),
@@ -33,6 +34,10 @@ def load_checkpoint(path):
 
 
 def save_model(model, path):
+    if not os.path.exists(os.path.dirname(path)):
+        print("Creating directories with path: `{}`".format(path))
+        os.makedirs(os.path.dirname(path))
+
     torch.save({
         "model_state_dict": model.state_dict(),
         "model": {
