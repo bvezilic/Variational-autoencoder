@@ -53,5 +53,6 @@ def load_model(path):
 
     model = VAE(**restore_dict["model"])
     model.load_state_dict(restore_dict["model_state_dict"])
+    model.eval()
 
     return model
