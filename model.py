@@ -61,4 +61,4 @@ class VAE(nn.Module):
         z, logvar, mu = self.latent_z(p_x)
         q_z = self.decoder(z)
 
-        return q_z, logvar, mu
+        return q_z, logvar, mu, z

@@ -5,6 +5,7 @@ from torch.utils.data.dataloader import DataLoader
 from torchvision.datasets import MNIST
 from torchvision.transforms import ToTensor
 
+from callbacks import PlotSamples
 from loss import loss_criterion
 from model import VAE
 from utils import load_checkpoint, save_checkpoint
@@ -12,11 +13,12 @@ from config import *
 
 
 class Trainer:
-    def __init__(self, model, data_loader, optimizer, device):
+    def __init__(self, model, data_loader, optimizer, device, callbacks):
         self.model = model
         self.data_loader = data_loader
         self.optimizer = optimizer
         self.device = device
+        self.callbacks = callbacks
 
     def run_train_loop(self, epochs):
         self.model.to(self.device)
@@ -24,7 +26,7 @@ class Trainer:
 
         losses = []
         for epoch in range(1, epochs+1):
-            print("-" * 40)
+            print("-" * 20)
             print("Epoch {}".format(epoch))
 
             running_loss = 0
@@ -33,7 +35,7 @@ class Trainer:
 
                 x = inputs.view(inputs.shape[0], -1).to(self.device)
                 y = (x > 0.5).float().to(self.device)
-                y_hat, logvar, mu = self.model(x)
+                y_hat, logvar, mu, _ = self.model(x)
 
                 loss = loss_criterion(y_hat, y, logvar, mu)
                 loss.backward()
@@ -44,6 +46,9 @@ class Trainer:
             epoch_loss = running_loss / len(self.data_loader)
             losses.append(epoch_loss)
             print("Loss: {:.4f}".format(epoch_loss))
+
+            if self.callbacks:
+                [fn(self) for fn in self.callbacks]
 
         return losses
 
@@ -72,7 +77,8 @@ def train():
     trainer = Trainer(model=model,
                       data_loader=data_loader,
                       optimizer=optimizer,
-                      device=args.device)
+                      device=args.device,
+                      callbacks=[PlotSamples(save_dir=PROJECT_ROOT + "/images")])
 
     # Run training
     trainer.run_train_loop(config["epochs"])

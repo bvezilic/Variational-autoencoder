@@ -17,7 +17,12 @@ class Generator:
             normal_dist = Normal(0, 1)
             randn_sample = normal_dist.sample((1, self.model.latent_size))
 
-            return self.model.decoder(randn_sample)
+            sample = self.model.decoder(randn_sample)
+            sample = sample.squeeze()
+            sample = sample.reshape(28, 28)
+            sample = sample.cpu().numpy()
+
+            return sample
 
 
 def generate():
@@ -25,10 +30,6 @@ def generate():
     generator = Generator(model)
 
     sample = generator.sample()
-    sample = sample.squeeze()
-    sample = sample.reshape(28, 28)
-    sample = sample.cpu().numpy()
-    print("Sample: {}".format(sample))
 
     plt.imshow(sample)
     print("STOP")
