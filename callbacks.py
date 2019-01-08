@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import torch
 import matplotlib.pyplot as plt
@@ -8,6 +9,9 @@ class PlotSamples:
         self.num_samples = num_samples
         self.save_dir = save_dir
         self.counter = 0
+
+        if not os.path.exists(self.save_dir):
+            os.makedirs(self.save_dir)
 
     def __call__(self, trainer):
         trainer.model.eval()
