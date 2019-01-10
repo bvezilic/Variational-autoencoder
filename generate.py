@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import torch
 from torch.distributions.normal import Normal
 
-from config import MODELS_ROOT
+from config import MODELS_DIR
 from utils import load_model
 
 
@@ -26,7 +26,7 @@ class Generator:
 
 
 def generate():
-    model = load_model(os.path.join(MODELS_ROOT, args.model_name))
+    model = load_model(os.path.join(MODELS_DIR, args.model_name))
     generator = Generator(model)
 
     sample = generator.sample()

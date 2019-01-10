@@ -4,7 +4,8 @@ import torch
 import matplotlib.pyplot as plt
 
 
-class PlotSamples:
+class PlotCallback:
+    """Callback class that retrieves several samples and displays model reconstructions"""
     def __init__(self, num_samples=4, save_dir=None):
         self.num_samples = num_samples
         self.save_dir = save_dir
@@ -14,38 +15,48 @@ class PlotSamples:
             os.makedirs(self.save_dir)
 
     def __call__(self, trainer):
-        trainer.model.eval()
+        trainer.model.eval()  # Set model to eval mode due to Dropout, BN, etc.
         with torch.no_grad():
-            inputs = self._random_samples(trainer)
-            outputs, _, _, z = trainer.model(inputs)
+            inputs = self._batch_random_samples(trainer)
+            outputs, _, _, z = trainer.model(inputs)  # Forward pass
 
-            input_images = self._convert_to_image(inputs)
-            recon_images = self._convert_to_image(outputs)
-            z_numpy = z.cpu().numpy()
+            # Prepare data for plotting
+            input_images = self._reshape_to_image(inputs, numpy=True)
+            recon_images = self._reshape_to_image(outputs, numpy=True)
+            z_ = self._to_numpy(z)
 
-            self._plot_samples(input_images, recon_images, z_numpy)
+            self._plot_samples(input_images, recon_images, z_)
 
-        # Return to train mode
-        trainer.model.train()
+        trainer.model.train()  # Return to train mode
 
-    def _random_samples(self, trainer):
+    def _batch_random_samples(self, trainer):
+        """Helper function that retrieves `num_samles` from dataset and prepare them in batch for model """
         dataset = trainer.data_loader.dataset
+
         ids = np.random.randint(len(dataset), size=self.num_samples)
+        samples = [dataset[idx][0] for idx in ids]  # Each data point is (image, class)
 
-        samples = [dataset[idx][0] for idx in ids]
-        samples = torch.stack(samples)
-        samples = samples.view(samples.size(0), -1)
-        samples = samples.to(trainer.device)
+        # Create batch
+        batch = torch.stack(samples)
+        batch = batch.view(batch.size(0), -1)  # Flatten
+        batch = batch.to(trainer.device)
 
-        return samples
+        return batch
 
-    def _convert_to_image(self, tensor):
+    def _reshape_to_image(self, tensor, numpy=True):
+        """Helper function that converts image-vector into image-matrix."""
         images = tensor.reshape(-1, 28, 28)
-        images = images.cpu().numpy()
+        if numpy:
+            images = self._to_numpy(images)
 
         return images
 
+    def _to_numpy(self, tensor):
+        """Helper function that converts tensor to numpy"""
+        return tensor.cpu().numpy()
+
     def _plot_samples(self, input_images, recon_images, z):
+        """Creates plot figure and saves it on disk if save_dir is passed."""
         fig, ax_lst = plt.subplots(self.num_samples, 3)
         fig.suptitle("Input -> Latent Z -> Reconstructed")
 
@@ -67,5 +78,3 @@ class PlotSamples:
             self.counter += 1
         else:
             plt.show(fig)
-
-

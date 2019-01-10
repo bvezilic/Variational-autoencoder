@@ -1,5 +1,5 @@
 {
-  "epochs": 100,
+  "epochs": 20,
   "batch_size": 64,
   "lr": 0.001,
   "save_path": "hs-512_ls-20.pt",
