@@ -70,7 +70,7 @@ class PlotCallback:
 
             # Reconstructed images
             ax_lst[i][2].imshow(recon_images[i], cmap="gray")
-            ax_lst[i][0].set_axis_off()
+            ax_lst[i][2].set_axis_off()
 
         if self.save_dir:
             fig.savefig(self.save_dir + "/results_{}.png".format(self.counter))
