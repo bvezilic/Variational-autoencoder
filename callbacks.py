@@ -11,7 +11,7 @@ class PlotCallback:
         self.save_dir = save_dir
         self.counter = 0
 
-        if not os.path.exists(self.save_dir):
+        if self.save_dir and not os.path.exists(self.save_dir):
             os.makedirs(self.save_dir)
 
     def __call__(self, trainer):

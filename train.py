@@ -13,7 +13,7 @@ from config import *
 
 
 class Trainer:
-    def __init__(self, model, data_loader, optimizer, device, callbacks):
+    def __init__(self, model, data_loader, optimizer, device, callbacks=[]):
         self.model = model
         self.data_loader = data_loader
         self.optimizer = optimizer
@@ -50,7 +50,7 @@ class Trainer:
                 running_loss += loss
 
             epoch_loss = running_loss / len(self.data_loader)
-            losses.append(epoch_loss)
+            losses.append(epoch_loss.item())
             print("Loss: {:.4f}".format(epoch_loss))
 
             # On end of epoch call any callbacks
