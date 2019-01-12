@@ -1,10 +1,10 @@
-# Variational-autoencoder
+# Variational Autoencoder
 
 This is another PyTorch implementation of Variational Autoencoder (VAE) trained MNIST dataset. The goal of this exercise is to get more familiar with older generative models such as the family of autoencoders.
 
 ### Model
 
-Upon reading the original paper, examples and tutorials for a few days the whole model can be described in one image...
+Upon reading the original paper, examples and tutorials for a few days the best way to describe the model is through image:
 
 ![vae](https://user-images.githubusercontent.com/16206648/51078000-ed211680-16ae-11e9-8d03-590cda640b0e.png)
 
