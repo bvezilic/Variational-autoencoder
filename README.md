@@ -52,9 +52,11 @@ def loss_criterion(inputs, targets, logvar, mu):
     return bce_loss + kl_loss
 ```
 
-If `mu` and `logvar` were singular values, instead of vectors, plotting a 3D graph would look something like this:
+If `mu` and `logvar` were singular values, instead of vectors, plotting a regularization term would look something like this:
 
 ![reg_loss](https://user-images.githubusercontent.com/16206648/51078157-5c980580-16b1-11e9-863c-52f3183f7a0d.gif)
+
+Keep in mind that graph shows `m` as mean and `l` as logvar. Minimum for this function would be if both *m* and *l* are 0. And when *logvar=0* then *std = e^(0.5\*logvar) = e^(0.5\*0) = 1*.
 
 ### Issues
 
@@ -67,7 +69,7 @@ See the `reduction` parameter in `binary_cross_entropy` function? Well, if that 
 of averaging loss per batch, the loss would always stay the same. However, when changed to *sum*, the reconstructions 
 improved a lot.
 
-Training and sample can be seen in [notebook](https://github.com/bvezilic/Variational-autoencoder/blob/master/notebooks/train_and_eval.ipynb).
+Training and samples can be seen in [notebook](https://github.com/bvezilic/Variational-autoencoder/blob/master/notebooks/train_and_eval.ipynb).
 
 
 ### Resources
