@@ -32,8 +32,11 @@ class LatentZ(nn.Module):
 
 `mu` and `logvar` are standard fully connected layers that will represent mean and log-variance, respectfully.
 Using outputs of these layers will be then used to sample latent variable `z`. A couple of things before we
-can sample `z`, (1) compute `std` from `logvar`, (2) sample from the normal distribution to get `eps`. Once `std` and `eps`
-are obtained `z` can be computed as `std * eps + mu`. This way of computing `z` in the paper is called **parameterization trick** without which backpropagation wouldn't be possible.
+can sample `z`:
+1. compute `std` from `logvar`
+2. sample from the normal distribution to get `eps`
+
+Once `std` and `eps` are obtained `z` can be computed as `std * eps + mu`. This way of computing `z` in the paper is called **parameterization trick** without which backpropagation wouldn't be possible.
 
 A couple of differences compared to the original paper, *sigmoid* activations are replaced by *relu*. And instead of 
 *SGD*, *Adam* optimizer was used.
