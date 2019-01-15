@@ -72,7 +72,10 @@ See the `reduction` parameter in `binary_cross_entropy` function? Well, if that 
 of averaging loss per batch, the loss would always stay the same. However, when changed to *sum*, the reconstructions 
 improved a lot.
 
-Training and samples can be seen in [notebook](https://github.com/bvezilic/Variational-autoencoder/blob/master/notebooks/train_and_eval.ipynb).
+### Notebooks
+Example training and samples can be seen in [notebook](https://github.com/bvezilic/Variational-autoencoder/blob/master/notebooks/train_and_eval.ipynb).
+
+Visualization of generated samples as 2-dimensional manifold can be seen in [notebook](https://github.com/bvezilic/Variational-autoencoder/blob/master/notebooks/visualizing_manifold.ipynb)
 
 
 ### Resources
