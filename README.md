@@ -37,8 +37,7 @@ class LatentZ(nn.Module):
 ```
 
 `mu` and `logvar` are standard fully connected layers that will represent mean and log-variance, respectfully.
-Using outputs of these layers will be then used to sample latent variable `z`. A couple of things before we
-can sample `z`:
+Using outputs of these layers will be then used to sample latent variable `z`. To sample from `z` it's firstly necessary to:
 1. compute `std` from `logvar`
 2. sample from the normal distribution to get `eps`
 
