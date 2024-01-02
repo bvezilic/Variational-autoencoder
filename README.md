@@ -74,7 +74,7 @@ the training persisted.
 ![wrong](https://user-images.githubusercontent.com/16206648/51078424-03ca6c00-16b5-11e9-9727-eb73447e52ae.png)
 
 When leaving the `reduction` parameter in `binary_cross_entropy` to its default value of `average`-ing loss per batch, the
-loss would always stay the same and the all images will become a blob of all number combined. Changing reduction 
+loss would always stay the same and the all images would become a blob of all number combined. Changing reduction 
 parameter to `sum` fixed the issue where model can properly reconstruct images. Examples can be seen in notebooks.
 
 ### Notebooks
