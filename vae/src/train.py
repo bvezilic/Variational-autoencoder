@@ -5,11 +5,11 @@ from torch.utils.data.dataloader import DataLoader
 from torchvision.datasets import MNIST
 from torchvision.transforms import ToTensor
 
-from callbacks import PlotCallback
-from loss import loss_criterion
-from model import VAE
-from utils import load_checkpoint, save_checkpoint
-from config import *
+from vae.src.callbacks import PlotCallback
+from vae.src.loss import loss_criterion
+from vae.src.model import VAE
+from vae.src.utils import load_checkpoint, save_checkpoint
+from vae.config import *
 
 
 class Trainer:

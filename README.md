@@ -4,12 +4,18 @@ This is another PyTorch implementation of Variational Autoencoder (VAE) trained 
 
 ### Model
 
-Upon reading the original paper, examples and tutorials for a few days the best way to describe the model is through image:
+The model consists of usual Encoder-Decoder architecture:
 
-![vae](https://user-images.githubusercontent.com/16206648/51078000-ed211680-16ae-11e9-8d03-590cda640b0e.png)
+![vae](vae/assets/VAE.001.jpeg)
 
-Input, encoder, decoder, output are all pretty straight-forward concepts, however, what is exactly happening in the 
+Encoder and Decoder are standard 2-layer Feed-Forward Networks, however, what is exactly happening in the 
 middle section with the *latent variable*?
+
+![latent-variable](vae/assets/VAE.002.jpeg)
+
+More about standard deviation formula:
+
+![std](vae/assets/VAE.003.jpeg)
 
 Code-wise from [model.py](https://github.com/bvezilic/Variational-autoencoder/blob/master/model.py):
 
@@ -59,7 +65,7 @@ If `mu` and `logvar` were singular values, instead of vectors, plotting a regula
 
 ![reg_loss](https://user-images.githubusercontent.com/16206648/51078157-5c980580-16b1-11e9-863c-52f3183f7a0d.gif)
 
-Keep in mind that graph shows `m` as mean and `l` as logvar. Minimum for this function would be if both *m* and *l* are 0. And when *logvar=0* then *std = e^(0.5\*logvar) = e^(0.5\*0) = 1*.
+Keep in mind that graph shows `m` as mean and `l` as logvar. Reducing this loos will push *m* and *l* to be 0. And when *logvar=0* then *std = e^(0.5\*logvar) = e^(0.5\*0) = 1*.
 
 ### Issues
 
@@ -68,9 +74,9 @@ the training persisted.
 
 ![wrong](https://user-images.githubusercontent.com/16206648/51078424-03ca6c00-16b5-11e9-9727-eb73447e52ae.png)
 
-See the `reduction` parameter in `binary_cross_entropy` function? Well, if that parameter was left to its default value 
-of averaging loss per batch, the loss would always stay the same. However, when changed to *sum*, the reconstructions 
-improved a lot.
+When leaving the `reduction` parameter in `binary_cross_entropy` to its default value of `average`-ing loss per batch, the
+loss would always stay the same and the all images will become a blob of all number combined. Changing reduction 
+parameter to `sum` fixed the issue where model can properly reconstruct images. Examples can be seen in notebooks.
 
 ### Notebooks
 Example training and samples can be seen in [notebook](https://github.com/bvezilic/Variational-autoencoder/blob/master/notebooks/train_and_eval.ipynb).
