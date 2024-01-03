@@ -31,7 +31,7 @@ Since standard deviation (sigma) is the square root of the variance the formula 
 > properties but also fits better with the regularization term since lowering `logvar` to zero, means `std` will be 1. 
 > Which means we got normal distribution. (mean=0, std=1)
 
-Code-wise from [model.py](https://github.com/bvezilic/Variational-autoencoder/blob/master/model.py):
+Code-wise from [model.py](vae/vae/model.py):
 
 ```python
 class LatentZ(nn.Module):
