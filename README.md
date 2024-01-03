@@ -86,9 +86,9 @@ loss would always stay the same and the all images would become a blob of all nu
 parameter to `sum` fixed the issue where model can properly reconstruct images. Examples can be seen in notebooks.
 
 ### Notebooks
-Example training and samples can be seen in [notebook](https://github.com/bvezilic/Variational-autoencoder/blob/master/notebooks/train_and_eval.ipynb).
+Example training and samples can be seen in [notebook](vae/notebooks/train_and_eval.ipynb).
 
-Visualization of generated samples as 2-dimensional manifold can be seen in [notebook](https://github.com/bvezilic/Variational-autoencoder/blob/master/notebooks/visualizing_manifold.ipynb)
+Visualization of generated samples as 2-dimensional manifold can be seen in [notebook](vae/notebooks/visualizing_manifold.ipynb)
 
 
 ### Resources
