@@ -13,9 +13,23 @@ middle section with the *latent variable*?
 
 ![latent-variable](vae/assets/VAE.002.jpeg)
 
-More about standard deviation formula:
+Two linear (dense) layers will represent **mean** and **log-variance**. These layer will use encoders output as input and 
+will produce `mu` and `logvar` vectors. From these vectors latent variable `z` is computed as shown in picture above.
+
+1. Compute standard deviation (`std`) from `logvar`
+2. Sample from the normal distribution to get `eps` and mutiply it with `std`
+3. Add mean (`mu`)
+
+This way of computing `z` in the paper is called **parameterization trick** without which backpropagation wouldn't be possible.
+
+Upper-mentioned formula for deriving `logvar` from standard deviation can be seen below. 
+Since standard deviation (sigma) is the square root of the variance the formula can be slightly re-written like:
 
 ![std](vae/assets/VAE.003.jpeg)
+
+> I am not sure why log-variance is chosen to represent standard deviation. My assumption is that log has some better
+> properties but also fits better with the regularization term since lowering `logvar` to zero, means `std` will be 1. 
+> Which means we got normal distribution. (mean=0, std=1)
 
 Code-wise from [model.py](https://github.com/bvezilic/Variational-autoencoder/blob/master/model.py):
 
@@ -35,13 +49,6 @@ class LatentZ(nn.Module):
 
         return std * eps + mu, logvar, mu
 ```
-
-`mu` and `logvar` are standard fully connected layers that will represent mean and log-variance, respectfully.
-Using outputs of these layers will be then used to sample latent variable `z`. To sample from `z` it's firstly necessary to:
-1. compute `std` from `logvar`
-2. sample from the normal distribution to get `eps`
-
-Once `std` and `eps` are obtained `z` can be computed as `std * eps + mu`. This way of computing `z` in the paper is called **parameterization trick** without which backpropagation wouldn't be possible.
 
 A couple of differences compared to the original paper, *sigmoid* activations are replaced by *relu*. And instead of 
 *SGD*, *Adam* optimizer was used.
@@ -64,7 +71,8 @@ If `mu` and `logvar` were singular values, instead of vectors, plotting a regula
 
 ![reg_loss](https://user-images.githubusercontent.com/16206648/51078157-5c980580-16b1-11e9-863c-52f3183f7a0d.gif)
 
-Keep in mind that graph shows `m` as mean and `l` as logvar. Reducing this loos will push *m* and *l* to be 0. And when *logvar=0* then *std = e^(0.5\*logvar) = e^(0.5\*0) = 1*.
+Keep in mind that graph shows `m` as mean and `l` as logvar. Reducing this loss will push *m* and *l* to be 0. 
+And when **logvar=0** then **std = e^(0.5\*logvar) = e^(0.5\*0) = 1**.
 
 ### Issues
 
