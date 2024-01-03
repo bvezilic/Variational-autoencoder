@@ -58,7 +58,7 @@ class PlotCallback:
     def _plot_samples(self, input_images, recon_images, z):
         """Creates plot figure and saves it on disk if save_dir is passed."""
         fig, ax_lst = plt.subplots(self.num_samples, 3)
-        fig.suptitle("Input -> Latent Z -> Reconstructed")
+        fig.suptitle("Input → Latent Z → Reconstructed")
 
         for i in range(self.num_samples):
             # Images
@@ -71,6 +71,8 @@ class PlotCallback:
             # Reconstructed images
             ax_lst[i][2].imshow(recon_images[i], cmap="gray")
             ax_lst[i][2].set_axis_off()
+
+        fig.tight_layout()
 
         if self.save_dir:
             fig.savefig(self.save_dir + "/results_{}.png".format(self.counter))

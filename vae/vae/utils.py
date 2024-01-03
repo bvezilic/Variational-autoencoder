@@ -2,7 +2,7 @@ import os
 import torch
 import torch.nn as nn
 
-from model import VAE
+from vae.model import VAE
 
 
 def save_checkpoint(model, optimizer, path):
