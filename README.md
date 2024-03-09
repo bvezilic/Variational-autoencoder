@@ -6,12 +6,12 @@ This is another PyTorch implementation of Variational Autoencoder (VAE) trained 
 
 The model consists of usual Encoder-Decoder architecture:
 
-![vae](vae/assets/VAE.001.jpeg)
+![vae](assets/VAE.001.jpeg)
 
 Encoder and Decoder are standard 2-layer Feed-Forward Networks, however, what is exactly happening in the 
 middle section with the *latent variable*?
 
-![latent-variable](vae/assets/VAE.002.jpeg)
+![latent-variable](assets/VAE.002.jpeg)
 
 Two linear (dense) layers will represent **mean** and **log-variance**. These layer will use encoders output as input and 
 will produce `mu` and `logvar` vectors. From these vectors latent variable `z` is computed as shown in picture above.
@@ -25,13 +25,13 @@ This way of computing `z` in the paper is called **parameterization trick** with
 Upper-mentioned formula for deriving `logvar` from standard deviation can be seen below. 
 Since standard deviation (sigma) is the square root of the variance the formula can be slightly re-written like:
 
-![std](vae/assets/VAE.003.jpeg)
+![std](assets/VAE.003.jpeg)
 
 > I am not sure why log-variance is chosen to represent standard deviation. My assumption is that log has some better
 > properties but also fits better with the regularization term since lowering `logvar` to zero, means `std` will be 1. 
 > Which means we got normal distribution. (mean=0, std=1)
 
-Code-wise from [model.py](vae/vae/model.py):
+Code-wise from [model.py](vae/model.py):
 
 ```python
 class LatentZ(nn.Module):
@@ -86,9 +86,9 @@ loss would always stay the same and the all images would become a blob of all nu
 parameter to `sum` fixed the issue where model can properly reconstruct images. Examples can be seen in notebooks.
 
 ### Notebooks
-Example training and samples can be seen in [notebook](vae/notebooks/train_and_eval.ipynb).
+Example training and samples can be seen in [notebook](notebooks/train_and_eval.ipynb).
 
-Visualization of generated samples as 2-dimensional manifold can be seen in [notebook](vae/notebooks/visualizing_manifold.ipynb)
+Visualization of generated samples as 2-dimensional manifold can be seen in [notebook](notebooks/visualizing_manifold.ipynb)
 
 
 ### Resources
